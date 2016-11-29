@@ -16,7 +16,6 @@ pygame.display.set_caption('Audio')
 sound = wave.open("noise2.wav")
 
 
-
 # Set up game loop
 while True:
     for event in pygame.event.get():

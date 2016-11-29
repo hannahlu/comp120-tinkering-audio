@@ -11,8 +11,6 @@ Clock = pygame.time.Clock()
 noise_out = wave.open('noise2.wav', 'w')
 noise_out.setparams((2, 2, 44100, 44100*10, 'NONE', 'not compressed'))
 
-values = []
-
 SAMPLE_LENGTH = 44100*10
 SAMPLE_RATE = 220
 SAMPLE_WIDTH = float(44100)
