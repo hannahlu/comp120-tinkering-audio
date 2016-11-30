@@ -8,17 +8,19 @@ import winsound
 from pygame.locals import*
 
 pygame.init()
-pygame.mixer.init()
-pygame.mixer.pre_init(44100, -16, 2, 4096)
 Clock = pygame.time.Clock()
 
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 900
+
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
+window.fill((255, 255, 255))
+pygame.display.set_caption('Rubber Biscuits')
 
-sound = pygame.mixer.music.load(open('rubber_biscuit.wav'))
+soundFile = wave.open('rubber_biscuit.wav', 'w')
 
-SAMPLE_LENGTH = 44100*10
+SAMPLE_LENGTH = soundFile.getnframes()
+frames = []
 SAMPLE_RATE = 220
 SAMPLE_WIDTH = float(44100)
 FREQUENCY = 1
@@ -27,13 +29,28 @@ BIT_DEPTH = 705
 CHANNELS = 2
 timer = 0
 
+params = soundFile.getparams()
+soundFile.setparams(params)
+
+
+def get_parameters():
+    soundFile.getparams()
+
+
+def read_file():
+    for i in range(0, SAMPLE_LENGTH):
+        value = math.sin(2.0 * math.pi*FREQUENCY*(i/SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
+        packaged_value = struct.pack('<h', value)
+        for j in range(0, 1):
+            value.append(packaged_value)
+
 while True:
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
         if event.type == KEYDOWN and event.key == K_SPACE:
-            pygame.mixer.music.play(-1)
+            winsound.PlaySound('')
             pygame.time.wait(5000)
         if event.type == KEYDOWN and event.key == K_ESCAPE:
             pygame.mixer.quit()

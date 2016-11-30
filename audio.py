@@ -1,15 +1,22 @@
-import wave
 import math
+import wave
 import struct
 import pygame
-from pygame import*
+import pygame.mixer
+import sys
+import winsound
+from pygame.locals import*
 
 pygame.init()
-
+pygame.mixer.init()
+pygame.mixer.pre_init(44100, -16, 2, 4096)
 Clock = pygame.time.Clock()
 
-noise_out = wave.open('noise2.wav', 'w')
-noise_out.setparams((2, 2, 44100, 44100*10, 'NONE', 'not compressed'))
+WINDOW_WIDTH = 1200
+WINDOW_HEIGHT = 900
+window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
+
+sound = pygame.mixer.music.load(open('rubber_biscuit.wav'))
 
 SAMPLE_LENGTH = 44100*10
 SAMPLE_RATE = 220
@@ -20,29 +27,14 @@ BIT_DEPTH = 705
 CHANNELS = 2
 timer = 0
 
-for i in range(0, SAMPLE_LENGTH):
-    timer += 0
-
-    value = math.sin(
-        2.0*math.pi*FREQUENCY*(i/SAMPLE_RATE))*(VOLUME*BIT_DEPTH)
-
-    packaged_value = struct.pack("<H", value)
-
-    for j in xrange(0, CHANNELS):
-        values.append(packaged_value)
-
-    value_str = ".join(values)"
-
-    noise_out.close()
-
-# Set up game loop
 while True:
     for event in pygame.event.get():
-        pygame.quit()
-        sys.exit()
-
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == KEYDOWN and event.key == K_SPACE:
+            pygame.mixer.music.play(-1)
+            pygame.time.wait(5000)
+        if event.type == KEYDOWN and event.key == K_ESCAPE:
+            pygame.mixer.quit()
     pygame.display.update()
-    Clock.tick(200)
-
-pygame.quit()
-quit()

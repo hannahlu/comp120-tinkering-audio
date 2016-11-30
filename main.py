@@ -1,32 +1,40 @@
-import pygame, sys, time, random
+import math
 import wave
+import struct
+import pygame
+import pygame.mixer
+import sys
+import winsound
 from pygame.locals import*
 
-# Set up pygame
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.pre_init(44100, -16, 2, 4096)
 Clock = pygame.time.Clock()
 
-# Set up window
-WINDOW_WIDTH = 400
-WINDOW_HEIGHT = 400
+WINDOW_WIDTH = 1200
+WINDOW_HEIGHT = 900
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
-pygame.display.set_caption('Audio')
 
-# Set up sound
-sound = wave.open("noise2.wav")
+sound = pygame.mixer.music.load(open('rubber_biscuit.wav'))
 
+SAMPLE_LENGTH = 44100*10
+SAMPLE_RATE = 220
+SAMPLE_WIDTH = float(44100)
+FREQUENCY = 1
+VOLUME = 1
+BIT_DEPTH = 705
+CHANNELS = 2
+timer = 0
 
-# Set up game loop
 while True:
     for event in pygame.event.get():
-        pygame.quit()
-        sys.exit()
-    if event.type == KEYDOWN:
-        if event.key == K_s:
-            play(sound)
-
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == KEYDOWN and event.key == K_SPACE:
+            pygame.mixer.music.play(-1)
+            pygame.time.wait(5000)
+        if event.type == KEYDOWN and event.key == K_ESCAPE:
+            pygame.mixer.quit()
     pygame.display.update()
-    clock.tick(200)
-
-pygame.quit()
-quit()
