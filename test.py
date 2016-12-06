@@ -2,7 +2,6 @@ import math
 import wave
 import struct
 import pygame
-import pygame.mixer
 import sys
 import winsound
 from pygame.locals import*
@@ -37,7 +36,7 @@ def get_parameters():
     soundFile.getparams()
 
 
-def read_file():
+def packfile():
     for i in range(0, SAMPLE_LENGTH):
         value = math.sin(2.0 * math.pi*FREQUENCY*(i/SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
         packaged_value = struct.pack('<h', value)
