@@ -18,14 +18,14 @@ WINDOW_HEIGHT = 900
 
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
 window.fill((255, 255, 255))
-pygame.display.set_caption('Rubber Biscuits')
+pygame.display.set_caption('Audio')
 
 SAMPLE_LENGTH = 44100
 frames = []
 SAMPLE_RATE = 220
 SAMPLE_WIDTH = float(44100)
 FREQUENCY = 1
-VOLUME = 500
+VOLUME = 1
 BIT_DEPTH = 705
 CHANNELS = 1
 
