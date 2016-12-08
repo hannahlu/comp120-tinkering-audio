@@ -1,11 +1,11 @@
 import wave
+import time
 import struct
-import os
+import winsound
 import math
 import sys
 import pygame
 from pygame.locals import *
-
 
 pygame.init()
 pygame.mixer.init()
@@ -13,10 +13,13 @@ Clock = pygame.time.Clock()
 
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 900
+WHITE = (255, 255, 255)
 
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
 pygame.display.set_caption('Audio')
-window.fill((255, 255, 255))
+font = pygame.font.SysFont("Courier", 50)
+textColour = (0, 0, 0)
+window.fill(WHITE)
 
 soundFile = wave.open('puretone.wav', 'w')
 
@@ -39,27 +42,68 @@ for i in range(0, FRAMES):
     print(int(data[0]))
 
 '''Generate Pure Tone'''
-for i in range(SAMPLE_LENGTH):
-    value = math.sin(2.0 * math.pi * FREQUENCY * (i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
-    packedValue = struct.pack('h', value)
-    soundFile.writeframes(packedValue)
-    soundFile.writeframes(packedValue)
+def puretone():
+    for i in range(SAMPLE_LENGTH):
+        value = math.sin(2.0 * math.pi * FREQUENCY * (i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
+        packedValue = struct.pack('h', value)
+        soundFile.writeframes(packedValue)
+
+"""Make background red"""
+def makered():
+    for Y in range(0, WINDOW_HEIGHT):
+        for X in range(0, WINDOW_WIDTH):
+
+            RED = window.get_at((X, Y)).r
+            GREEN = window.get_at((X, Y)).g
+            BLUE = window.get_at((X, Y)).b
+
+            RED = 255
+            GREEN = 255 - GREEN
+            BLUE = 255 - BLUE
+
+            PXArray[X, Y] = (RED, GREEN, BLUE)
+
+def text():
+    x = 50
+    y = 100
+    label = font.render("Generating Pure Tone...", 1, textColour)
+    window.blit(label, (x, y))
+    if timer == 1:
+        del label
+
+def text2():
+    x = 50
+    y = 100
+    label = font.render("Success", 1, textColour)
+    window.blit(label, (x, y))
 
 while True:
     pressed = pygame.key.get_pressed()
+    timer = 0
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == KEYDOWN and event.key == K_p:
-            sound = wave.open("puretone.wav")
-            os.system("puretone.wav")
-        if event.type == KEYDOWN and event.key == K_ESCAPE:
-            soundFile.close()
+    if timer == 0:
+        print("Generating Pure Tone")
+        text()
+        PXArray = pygame.PixelArray(window)
+        makered()
+        del PXArray
+        pygame.display.update()
+        timer = timer + 1
+    if timer == 1:
+        puretone()
+        winsound.PlaySound("puretone.wav", winsound.SND_FILENAME)
+        timer = timer + 1
+    if timer == 2:
+        winsound.PlaySound("None", 1)
+    if event.type == KEYDOWN and event.key == K_ESCAPE:
+        soundFile.close()
 
     pygame.display.update()
     Clock.tick(500)
 
-
+winsound.PlaySound(None, winsound.SND_FILENAME)
 soundFile.close()
 

@@ -1,10 +1,6 @@
 import wave
 import struct
-import os
 import math
-import sys
-import pygame
-from pygame.locals import *
 
 soundFile = wave.open('puretone.wav', 'w')
 
@@ -21,14 +17,18 @@ TIMER = 0
 params = soundFile.getparams()
 
 '''Unpack wav file'''
-for i in range(0, FRAMES):
-    waveData = soundFile.readframes(1)
-    data = struct.unpack("<h", waveData)
-    print(int(data[0]))
+def unpack():
+    for i in range(0, FRAMES):
+        waveData = soundFile.readframes(1)
+        data = struct.unpack("<h", waveData)
+        print(int(data[0]))
 
 '''Generate Pure Tone'''
-for i in range(SAMPLE_LENGTH):
-    value = math.sin(2.0 * math.pi * FREQUENCY * (i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
-    packedValue = struct.pack('h', value)
-    soundFile.writeframes(packedValue)
-    soundFile.writeframes(packedValue)
+def puretone():
+    for i in range(SAMPLE_LENGTH):
+        value = math.sin(2.0 * math.pi * FREQUENCY * (i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
+        packedValue = struct.pack('h', value)
+        soundFile.writeframes(packedValue)
+
+unpack()
+puretone()
