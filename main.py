@@ -47,6 +47,10 @@ def puretone():
         packedValue = struct.pack('h', value)
         soundFile.writeframes(packedValue)
 
+'''Generate White Noise'''
+def whitenoise()
+
+
 """Make background red"""
 def makered():
     for Y in range(0, WINDOW_HEIGHT):
@@ -62,18 +66,31 @@ def makered():
 
             PXArray[X, Y] = (RED, GREEN, BLUE)
 
+"""Make background green"""
+def makegreen():
+    for Y in range(0, WINDOW_HEIGHT):
+        for X in range(0, WINDOW_WIDTH):
+
+            RED = window.get_at((X, Y)).r
+            GREEN = window.get_at((X, Y)).g
+            BLUE = window.get_at((X, Y)).b
+
+            RED = 255 - RED
+            GREEN = 255
+            BLUE = 255 - BLUE
+
+            PXArray[X, Y] = (RED, GREEN, BLUE)
+
 def text():
     x = 50
     y = 100
     label = font.render("Generating Pure Tone...", 1, textColour)
     window.blit(label, (x, y))
-    if timer == 1:
-        del label
 
 def text2():
     x = 50
     y = 100
-    label = font.render("Success", 1, textColour)
+    label = font.render("Generating White Noise", 1, textColour)
     window.blit(label, (x, y))
 
 while True:
@@ -88,15 +105,28 @@ while True:
         text()
         PXArray = pygame.PixelArray(window)
         makered()
-        del PXArray
         pygame.display.update()
+        del PXArray
         timer = timer + 1
     if timer == 1:
         puretone()
         winsound.PlaySound("puretone.wav", winsound.SND_FILENAME)
         timer = timer + 1
     if timer == 2:
+        window.fill(WHITE)
         winsound.PlaySound("None", 1)
+        timer = timer + 1
+    if timer == 3:
+        text2()
+        PXArray = pygame.PixelArray(window)
+        makegreen()
+        pygame.display.update()
+        del PXArray
+        timer = timer + 1
+    if timer == 4:
+        window.fill(WHITE)
+        winsound.PlaySound("whitenoise.wav", winsound.SND_FILENAME)
+        timer = timer + 1
     if event.type == KEYDOWN and event.key == K_ESCAPE:
         soundFile.close()
 
