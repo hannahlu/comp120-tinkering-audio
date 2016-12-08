@@ -47,10 +47,6 @@ def puretone():
         packedValue = struct.pack('h', value)
         soundFile.writeframes(packedValue)
 
-'''Generate White Noise'''
-def whitenoise()
-
-
 """Make background red"""
 def makered():
     for Y in range(0, WINDOW_HEIGHT):

@@ -1,9 +1,8 @@
 import wave
 import struct
 import math
-import matlab
 
-
+soundFile = ('vale.wav', 'w')
 
 # Set up params
 soundFile.setparams((2, 2, 44100, 44100*8, 'NONE', 'not compressed'))
@@ -25,14 +24,16 @@ def unpack():
         print(int(data[0]))
 
 '''Generate Echo'''
-def echo(delay):
-    valeSong  = wave.open("vale.wav", "r")
-    soundFile = wave.open('echo.wav', 'w')
+def echo():
+    soundFile = ("vale.wav", "w")
+    soundFile2 = ("vale.wav", "w")
     delay = 0.5
-    valeSong =
-    soundFile =
-
-
+    for index in range(delay, len(soundFile)):
+        echo = 0.5*soundFile2[index-delay]
+        soundFile[index] += echo
+        packedValue = struct.pack("<h", soundFile[index])
+        soundFile.writeframes(packedValue)
 
 unpack()
 echo()
+soundFile.close()
