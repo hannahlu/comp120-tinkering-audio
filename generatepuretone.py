@@ -6,18 +6,6 @@ import sys
 import pygame
 from pygame.locals import *
 
-
-pygame.init()
-pygame.mixer.init()
-Clock = pygame.time.Clock()
-
-WINDOW_WIDTH = 1200
-WINDOW_HEIGHT = 900
-
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), 0, 32)
-pygame.display.set_caption('Audio')
-window.fill((255, 255, 255))
-
 soundFile = wave.open('puretone.wav', 'w')
 
 # Set up params
@@ -44,22 +32,3 @@ for i in range(SAMPLE_LENGTH):
     packedValue = struct.pack('h', value)
     soundFile.writeframes(packedValue)
     soundFile.writeframes(packedValue)
-
-while True:
-    pressed = pygame.key.get_pressed()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-        if event.type == KEYDOWN and event.key == K_p:
-            sound = wave.open("puretone.wav")
-            os.system("puretone.wav")
-        if event.type == KEYDOWN and event.key == K_ESCAPE:
-            soundFile.close()
-
-    pygame.display.update()
-    Clock.tick(500)
-
-
-soundFile.close()
-
