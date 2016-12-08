@@ -1,8 +1,8 @@
 import wave
 import struct
-import math
 
-soundFile = ('vale.wav', 'w')
+sheep = wave.open("sheep.wav", "r")
+soundFile = wave.open('sheepEcho.wav', 'w')
 
 # Set up params
 soundFile.setparams((2, 2, 44100, 44100*8, 'NONE', 'not compressed'))
@@ -23,17 +23,24 @@ def unpack():
         data = struct.unpack("<h", waveData)
         print(int(data[0]))
 
+def delay():
+    sound1 = sheep
+    sound2 = soundFile
+    for i in range(0, SAMPLE_LENGTH):
+        echo = 0.75
+        sound2 += echo
+        packedValue = struct.pack("<h", sound2)
+        soundFile.writeframes()
+
 '''Generate Echo'''
 def echo():
-    soundFile = ("vale.wav", "w")
-    soundFile2 = ("vale.wav", "w")
-    delay = 0.5
-    for index in range(delay, len(soundFile)):
-        echo = 0.5*soundFile2[index-delay]
-        soundFile[index] += echo
-        packedValue = struct.pack("<h", soundFile[index])
-        soundFile.writeframes(packedValue)
+    value = []
+    for i in range(0, SAMPLE_LENGTH):
+
+        packedValue = struct.pack('<h', value)
+        soundFile.write(packedValue)
+        soundFile.write(packedValue)
 
 unpack()
-echo()
+delay()
 soundFile.close()
