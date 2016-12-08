@@ -32,14 +32,8 @@ def delay():
         packedValue = struct.pack("<h", sound2)
         soundFile.writeframes()
 
-'''Generate Echo'''
-def echo():
-    value = []
-    for i in range(0, SAMPLE_LENGTH):
+def echo(delay, sound):
 
-        packedValue = struct.pack('<h', value)
-        soundFile.write(packedValue)
-        soundFile.write(packedValue)
 
 unpack()
 delay()
