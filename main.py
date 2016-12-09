@@ -4,6 +4,7 @@ import winsound
 import math
 import sys
 import time
+import numpy
 import pygame
 from pygame.locals import *
 
@@ -36,6 +37,7 @@ VOLUME = 1
 BIT_DEPTH = 32767
 CHANNELS = 2
 TIMER = 0
+value = []
 params = soundFile.getparams()
 
 '''Unpack wav file'''
@@ -54,11 +56,10 @@ def puretone():
 
 
 '''Increase Volume'''
-def increasevolume():
-    for i in range(SAMPLE_LENGTH):
-        value = int(volume*math.cos(FREQUENCY*math.pi*float(i)/float(SAMPLE_RATE)))
-        packedValue = struct.pack('<h', value)
-        soundFile.writeframes(packedValue)
+def increasevolume(value, length):
+    for i in xrange(length):
+        CHANNELS = 1
+        value[i] *= 2
 
 
 def text():
@@ -104,7 +105,7 @@ while True:
         timer = timer + 1
     if timer == 4:
         window.fill(RED)
-        increasevolume()
+        increasevolume(value, SAMPLE_LENGTH)
         pygame.display.update()
         winsound.PlaySound("puretone.wav", winsound.SND_FILENAME)
         timer = timer + 1
