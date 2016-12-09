@@ -25,7 +25,6 @@ textColour = (255, 255, 255)
 window.fill(WHITE)
 
 soundFile = wave.open('puretone.wav', 'w')
-whiteNoise = wave.open("whitenoise.wav", "w")
 
 # Set up params
 soundFile.setparams((2, 2, 44100, 44100*8, 'NONE', 'not compressed'))
@@ -53,14 +52,6 @@ def puretone():
         value = math.sin(2.0 * math.pi * FREQUENCY * (i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
         packedValue = struct.pack('<h', value)
         soundFile.writeframes(packedValue)
-
-
-'''Increase Volume'''
-def increasevolume(value, length):
-    for i in xrange(length):
-        CHANNELS = 1
-        value[i] *= 2
-
 
 def text():
     x = 50
@@ -105,10 +96,6 @@ while True:
         timer = timer + 1
     if timer == 4:
         window.fill(RED)
-        increasevolume(value, SAMPLE_LENGTH)
-        pygame.display.update()
-        winsound.PlaySound("puretone.wav", winsound.SND_FILENAME)
-        timer = timer + 1
     if event.type == KEYDOWN and event.key == K_ESCAPE:
         soundFile.close()
     else:
