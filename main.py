@@ -44,19 +44,22 @@ for i in range(0, FRAMES):
     data = struct.unpack("<h", waveData)
     print(int(data[0]))
 
+
 '''Generate Pure Tone'''
 def puretone():
     for i in range(SAMPLE_LENGTH):
         value = math.sin(2.0 * math.pi * FREQUENCY * (i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
-        packedValue = struct.pack('h', value)
+        packedValue = struct.pack('<h', value)
         soundFile.writeframes(packedValue)
 
-'''Generate White Noise'''
-def whitenoise():
+
+'''Increase Volume'''
+def increasevolume():
     for i in range(SAMPLE_LENGTH):
-        value = []
-        packedValue = struct.pack('h', value)
+        value = int(volume*math.cos(FREQUENCY*math.pi*float(i)/float(SAMPLE_RATE)))
+        packedValue = struct.pack('<h', value)
         soundFile.writeframes(packedValue)
+
 
 def text():
     x = 50
@@ -67,7 +70,7 @@ def text():
 def text2():
     x = 50
     y = 100
-    label = font.render("Generating White Noise...", 1, textColour)
+    label = font.render("Increasing volume...", 1, textColour)
     window.blit(label, (x, y))
 
 while True:
@@ -99,11 +102,11 @@ while True:
         pygame.display.update()
         time.sleep(1)
         timer = timer + 1
-    if timer == 1:
+    if timer == 4:
         window.fill(RED)
-        whitenoise()
+        increasevolume()
         pygame.display.update()
-        winsound.PlaySound("sheepEcho.wav", winsound.SND_FILENAME)
+        winsound.PlaySound("puretone.wav", winsound.SND_FILENAME)
         timer = timer + 1
     if event.type == KEYDOWN and event.key == K_ESCAPE:
         soundFile.close()
